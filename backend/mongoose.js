@@ -11,7 +11,7 @@ const connectMongoose = async () => {
             useFindAndModify: false,
             useCreateIndex: true,
         });
-        console.log('MongoDB connection stablished.');
+        console.log('MongoDB connected.');
     } catch (error) {
         console.log(error);
     }

@@ -5,6 +5,7 @@ import {
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
+import { generateToken } from '../utils.js';
 
 const resolvers = {
     Query: {
@@ -29,12 +30,14 @@ const resolvers = {
                     if (!correctPassword)
                         throw new AuthenticationError('Password is incorrect.');
 
+                    user.token = generateToken(
+                        JSON.parse(JSON.stringify(user))
+                    );
+
                     return user;
                 } else {
                     if (!user) throw new UserInputError('Username not found.');
                 }
-
-                return user;
             } catch (error) {
                 throw new ApolloError(error.message);
             }

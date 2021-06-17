@@ -4,6 +4,7 @@ const typeDefs = gql`
     type User {
         username: String!
         email: String!
+        token: String
     }
 
     type Query {

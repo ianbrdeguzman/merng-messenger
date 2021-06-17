@@ -3,7 +3,7 @@ import typeDefs from './graphql/typeDef.js';
 import resolvers from './graphql/resolvers.js';
 import connectMongoose from './mongoose.js';
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: (ctx) => ctx });
 
 await connectMongoose();
 

@@ -5,16 +5,27 @@ import {
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
-import { generateToken } from '../utils.js';
+import { generateToken, authenticateToken } from '../utils.js';
 
 const resolvers = {
     Query: {
-        users: async () => {
+        users: async (_, __, context) => {
             try {
-                const users = await User.find({});
-                return users;
+                if (context.req && context.req.headers.authorization) {
+                    const token =
+                        context.req.headers.authorization.split('Bearer ')[1];
+
+                    const { _id } = authenticateToken(token);
+
+                    if (_id) {
+                        const users = await User.find({ _id: { $ne: _id } });
+                        return users;
+                    }
+                } else {
+                    throw new AuthenticationError('No token Found.');
+                }
             } catch (error) {
-                console.log(error);
+                throw new ApolloError(error.message);
             }
         },
         login: async (_, { username, password }) => {
@@ -28,13 +39,13 @@ const resolvers = {
                     );
 
                     if (!correctPassword)
-                        throw new AuthenticationError('Password is incorrect.');
+                        throw new AuthenticationError('Incorrect password.');
 
-                    user.token = generateToken(
-                        JSON.parse(JSON.stringify(user))
-                    );
-
-                    return user;
+                    return {
+                        ...user.toJSON(),
+                        createdAt: user.createdAt.toISOString(),
+                        token: generateToken(JSON.parse(JSON.stringify(user))),
+                    };
                 } else {
                     if (!user) throw new UserInputError('Username not found.');
                 }

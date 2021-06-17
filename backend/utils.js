@@ -8,3 +8,17 @@ export const generateToken = (user) => {
         expiresIn: '1h',
     });
 };
+
+export const authenticateToken = (token) => {
+    return jwt.verify(
+        token,
+        process.env.REACT_APP_JWT_SECRET,
+        (error, decodedToken) => {
+            if (error) {
+                throw new Error('Invalid Token.');
+            } else {
+                return decodedToken;
+            }
+        }
+    );
+};

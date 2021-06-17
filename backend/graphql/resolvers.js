@@ -60,10 +60,10 @@ const resolvers = {
                 const userByEmail = await User.findOne({ email });
                 const userByUsername = await User.findOne({ username });
 
-                if (userByEmail)
-                    throw new UserInputError('Email address already taken.');
                 if (userByUsername)
                     throw new UserInputError('Username already taken.');
+                if (userByEmail)
+                    throw new UserInputError('Email address already taken.');
 
                 const user = new User({
                     username,

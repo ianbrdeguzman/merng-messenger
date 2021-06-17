@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './register.scss';
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER } from '../../apollo/mutation';
+import Loader from '../../components/loader/Loader';
+import { ImSpinner2 } from 'react-icons/im';
+import { useHistory } from 'react-router';
 
 const Register = () => {
+    const [error, setError] = useState(null);
+    const history = useHistory();
+
     const {
         register,
         handleSubmit,
@@ -10,8 +18,23 @@ const Register = () => {
         formState: { errors },
     } = useForm();
 
+    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+        update(_, res) {
+            if (res) history.push('/login');
+        },
+        onError(error) {
+            setError(error.message);
+        },
+    });
+
     const handleSubmitOnClick = (data) => {
-        console.log(data);
+        registerUser({
+            variables: {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+            },
+        });
     };
 
     return (
@@ -19,16 +42,22 @@ const Register = () => {
             <div className='register__content'>
                 <div className='register__content__left'>
                     <h1>Hang out anytime, anywhere</h1>
-                    <p>
+                    <p className='register__content__left__info'>
                         Messenger makes it easy and fun to stay close to your
                         favorite people.
                     </p>
+                    {error && (
+                        <p className='register__content__left__error'>
+                            {error}
+                        </p>
+                    )}
                     <form
                         className='register__content__left__form'
                         onSubmit={handleSubmit(handleSubmitOnClick)}
                     >
                         <div>
                             <input
+                                className={errors.username && 'error'}
                                 type='text'
                                 {...register('username', {
                                     required: 'Please enter a username.',
@@ -47,6 +76,7 @@ const Register = () => {
                         </div>
                         <div>
                             <input
+                                className={errors.email && 'error'}
                                 type='text'
                                 {...register('email', {
                                     required: 'Please enter a valid email.',
@@ -65,6 +95,7 @@ const Register = () => {
                         </div>
                         <div>
                             <input
+                                className={errors.password && 'error'}
                                 type='password'
                                 {...register('password', {
                                     required: 'Please enter a password.',
@@ -88,6 +119,7 @@ const Register = () => {
                         </div>
                         <div>
                             <input
+                                className={errors.confirmPassword && 'error'}
                                 type='password'
                                 {...register('confirmPassword', {
                                     validate: (value) =>
@@ -101,7 +133,15 @@ const Register = () => {
                                 <span>{errors.confirmPassword.message}</span>
                             )}
                         </div>
-                        <button type='submit'>Register</button>
+                        <button type='submit'>
+                            {loading ? (
+                                <Loader>
+                                    <ImSpinner2 />
+                                </Loader>
+                            ) : (
+                                'Register'
+                            )}
+                        </button>
                     </form>
                 </div>
                 <div className='register__content__right'>

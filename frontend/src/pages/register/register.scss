@@ -36,21 +36,27 @@
                     #ff5280 84.07%,
                     #ff7061 90.59%
                 );
+                background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 @media (min-width: 900px) {
                     font-size: 90px;
                 }
             }
-            p {
+            &__info {
                 color: #595959;
                 margin: 2rem 0;
                 line-height: 1.5;
             }
+            &__error {
+                color: red;
+                margin: 0;
+                font-size: 12px;
+            }
             &__form {
                 text-align: left;
-                div {
-                    margin: 1rem 0;
+                & > div {
+                    margin: 0.5rem 0;
                     input {
                         display: block;
                         width: 100%;
@@ -63,6 +69,9 @@
                         @media (min-width: 900px) {
                             max-width: 320px;
                         }
+                        &.error {
+                            border-bottom: 1px solid red;
+                        }
                     }
                     span {
                         margin-left: 1rem;
@@ -74,6 +83,7 @@
                 button {
                     display: block;
                     color: #ffffff;
+                    min-width: 106.5px;
                     margin-top: 2rem;
                     padding: 1rem;
                     border: none;
@@ -81,6 +91,10 @@
                     font-size: 20px;
                     border-radius: 3rem;
                     background-color: #0a7cff;
+                    &:hover {
+                        filter: brightness(0.9);
+                        cursor: pointer;
+                    }
                 }
             }
         }

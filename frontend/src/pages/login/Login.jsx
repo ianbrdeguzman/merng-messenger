@@ -5,11 +5,10 @@ import { useLazyQuery } from '@apollo/client';
 import Loader from '../../components/loader/Loader';
 import { ImSpinner2 } from 'react-icons/im';
 import { LOGIN_USER } from '../../apollo/query';
-import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ history }) => {
     const [error, setError] = useState(null);
-    const history = useHistory();
 
     const {
         register,
@@ -18,12 +17,11 @@ const Login = () => {
     } = useForm();
 
     const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
-        onCompleted(res) {
-            if (res) history.push('/');
+        onCompleted: (data) => {
+            sessionStorage.setItem('token', data.login.token);
+            history.push('/');
         },
-        onError(error) {
-            setError(error.message);
-        },
+        onError: (error) => setError(error.message),
     });
 
     const handleSubmitOnClick = (data) => {
@@ -94,15 +92,18 @@ const Login = () => {
                                 <span>{errors.password.message}</span>
                             )}
                         </div>
-                        <button type='submit'>
-                            {loading ? (
-                                <Loader>
-                                    <ImSpinner2 />
-                                </Loader>
-                            ) : (
-                                'Log In'
-                            )}
-                        </button>
+                        <div>
+                            <button type='submit'>
+                                {loading ? (
+                                    <Loader>
+                                        <ImSpinner2 />
+                                    </Loader>
+                                ) : (
+                                    'Log In'
+                                )}
+                            </button>
+                            <Link to='/register'>Dont have an account?</Link>
+                        </div>
                     </form>
                 </div>
                 <div className='login__content__right'>

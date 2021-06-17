@@ -5,11 +5,10 @@ import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../../apollo/mutation';
 import Loader from '../../components/loader/Loader';
 import { ImSpinner2 } from 'react-icons/im';
-import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({ history }) => {
     const [error, setError] = useState(null);
-    const history = useHistory();
 
     const {
         register,
@@ -19,12 +18,8 @@ const Register = () => {
     } = useForm();
 
     const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-        update(_, res) {
-            if (res) history.push('/login');
-        },
-        onError(error) {
-            setError(error.message);
-        },
+        update: (_, __) => history.push('/login'),
+        onError: (error) => setError(error.message),
     });
 
     const handleSubmitOnClick = (data) => {
@@ -133,15 +128,18 @@ const Register = () => {
                                 <span>{errors.confirmPassword.message}</span>
                             )}
                         </div>
-                        <button type='submit'>
-                            {loading ? (
-                                <Loader>
-                                    <ImSpinner2 />
-                                </Loader>
-                            ) : (
-                                'Register'
-                            )}
-                        </button>
+                        <div>
+                            <button type='submit'>
+                                {loading ? (
+                                    <Loader>
+                                        <ImSpinner2 />
+                                    </Loader>
+                                ) : (
+                                    'Register'
+                                )}
+                            </button>
+                            <Link to='/login'>Already have an account?</Link>
+                        </div>
                     </form>
                 </div>
                 <div className='register__content__right'>

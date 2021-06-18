@@ -1,11 +1,11 @@
-import User from '../../models/userModel.js';
+import User from '../../mongoose/models/userModel.js';
 import bcrypt from 'bcryptjs';
 import {
     ApolloError,
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
-import { generateToken } from '../../utils.js';
+import { generateToken } from '../../utils/utils.js';
 
 const userResolvers = {
     Query: {

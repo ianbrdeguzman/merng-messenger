@@ -1,5 +1,5 @@
-import User from '../../models/userModel.js';
-import Message from '../../models/messageModel.js';
+import User from '../../mongoose/models/userModel.js';
+import Message from '../../mongoose/models/messageModel.js';
 import {
     ApolloError,
     UserInputError,

@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { ApolloError, AuthenticationError } from 'apollo-server';
 
 dotenv.config();
 

@@ -1,4 +1,5 @@
 import User from '../../mongoose/models/userModel.js';
+import Message from '../../mongoose/models/messageModel.js';
 import bcrypt from 'bcryptjs';
 import {
     ApolloError,
@@ -13,7 +14,23 @@ const userResolvers = {
             try {
                 if (!user) throw new AuthenticationError('Invalid Token.');
 
-                const users = await User.find({ _id: { $ne: user._id } });
+                const users = await User.find({
+                    username: { $ne: user.username },
+                });
+
+                const allUserMessage = await Message.find({
+                    $or: [{ from: user.username }, { to: user.username }],
+                }).sort({ createdAt: 'desc' });
+
+                users.map((otherUser) => {
+                    const latestMessage = allUserMessage.find(
+                        (message) =>
+                            message.from === otherUser.username ||
+                            message.to === otherUser.username
+                    );
+                    otherUser.latestMessage = latestMessage;
+                });
+
                 return users;
             } catch (error) {
                 throw new ApolloError(error.message);
@@ -60,6 +77,7 @@ const userResolvers = {
                     username,
                     email,
                     password: bcrypt.hashSync(password, 8),
+                    imageUrl: `https://i.pravatar.cc/150?u=${username}`,
                 });
 
                 return user.save();

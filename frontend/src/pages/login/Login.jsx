@@ -8,7 +8,7 @@ import { LOGIN_USER } from '../../apollo/query';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 
-const Login = ({ history }) => {
+const Login = () => {
     const [error, setError] = useState(null);
     const { dispatch } = useContext(UserContext);
 
@@ -21,7 +21,6 @@ const Login = ({ history }) => {
     const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
         onCompleted: (data) => {
             dispatch({ type: 'USER_LOGIN', payload: data.login });
-            history.push('/t');
         },
         onError: (error) => setError(error.message),
     });

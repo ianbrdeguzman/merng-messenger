@@ -1,10 +1,22 @@
 import React, { createContext, useReducer } from 'react';
+import jwtDecode from 'jwt-decode';
 
 const UserContext = createContext();
 
 const initialState = {
     user: null,
 };
+
+const token = sessionStorage.getItem('token');
+if (token) {
+    const decodedToken = jwtDecode(token);
+    const tokenExpiresAt = new Date(decodedToken.exp * 1000);
+    if (new Date() > tokenExpiresAt) {
+        sessionStorage.removeItem('token');
+    } else {
+        initialState.user = decodedToken;
+    }
+}
 
 const userReducer = (state, action) => {
     switch (action.type) {

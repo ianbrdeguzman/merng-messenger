@@ -1,13 +1,13 @@
-import User from '../models/userModel.js';
+import User from '../../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import {
     ApolloError,
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
-import { generateToken } from '../utils.js';
+import { generateToken } from '../../utils.js';
 
-const resolvers = {
+const userResolvers = {
     Query: {
         users: async (_, __, { user }) => {
             try {
@@ -67,14 +67,7 @@ const resolvers = {
                 throw new ApolloError(error.message);
             }
         },
-        sendMessage: async (_, args) => {
-            try {
-            } catch (error) {
-                console.log(error);
-                throw new ApolloError(error.message);
-            }
-        },
     },
 };
 
-export default resolvers;
+export default userResolvers;

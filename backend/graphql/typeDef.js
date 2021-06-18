@@ -8,9 +8,10 @@ const typeDefs = gql`
         createdAt: String!
     }
     type Message {
-        context: String!
+        content: String!
         from: String!
         to: String!
+        createdAt: String!
     }
     type Query {
         users: [User]

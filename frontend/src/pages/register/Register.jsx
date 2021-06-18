@@ -138,7 +138,7 @@ const Register = ({ history }) => {
                                     'Register'
                                 )}
                             </button>
-                            <Link to='/login'>Already have an account?</Link>
+                            <Link to='/'>Already have an account?</Link>
                         </div>
                     </form>
                 </div>

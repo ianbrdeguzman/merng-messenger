@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './login.scss';
 import { useForm } from 'react-hook-form';
 import { useLazyQuery } from '@apollo/client';
@@ -6,9 +6,11 @@ import Loader from '../../components/loader/Loader';
 import { ImSpinner2 } from 'react-icons/im';
 import { LOGIN_USER } from '../../apollo/query';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 
 const Login = ({ history }) => {
     const [error, setError] = useState(null);
+    const { dispatch } = useContext(UserContext);
 
     const {
         register,
@@ -18,8 +20,8 @@ const Login = ({ history }) => {
 
     const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
         onCompleted: (data) => {
-            sessionStorage.setItem('token', data.login.token);
-            history.push('/');
+            dispatch({ type: 'USER_LOGIN', payload: data.login });
+            history.push('/t');
         },
         onError: (error) => setError(error.message),
     });

@@ -34,7 +34,7 @@ const userResolvers = {
 
                     return {
                         ...user.toJSON(),
-                        createdAt: user.createdAt.toISOString(),
+                        createdAt: user.createdAt,
                         token: generateToken(JSON.parse(JSON.stringify(user))),
                     };
                 } else {

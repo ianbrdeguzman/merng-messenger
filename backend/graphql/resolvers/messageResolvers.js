@@ -7,6 +7,26 @@ import {
 } from 'apollo-server-errors';
 
 const messageResolvers = {
+    Query: {
+        getMessages: async (_, { from }, { user }) => {
+            try {
+                if (!user) throw new AuthenticationError('Invalid Token.');
+
+                const sender = await User.findOne({ username: from });
+
+                if (!sender) throw new UserInputError('User not found.');
+
+                const messages = await Message.find({
+                    from: sender.username,
+                    to: user.username,
+                }).sort({ createdAt: 'desc' });
+
+                return messages;
+            } catch (error) {
+                throw new ApolloError(error.message);
+            }
+        },
+    },
     Mutation: {
         sendMessage: async (_, { content, to }, { user }) => {
             try {

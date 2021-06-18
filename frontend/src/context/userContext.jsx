@@ -7,12 +7,12 @@ const initialState = {
     user: null,
 };
 
-const token = sessionStorage.getItem('token');
+const token = localStorage.getItem('token');
 if (token) {
     const decodedToken = jwtDecode(token);
     const tokenExpiresAt = new Date(decodedToken.exp * 1000);
     if (new Date() > tokenExpiresAt) {
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
     } else {
         initialState.user = decodedToken;
     }
@@ -21,14 +21,14 @@ if (token) {
 const userReducer = (state, action) => {
     switch (action.type) {
         case 'USER_LOGIN': {
-            sessionStorage.setItem('token', action.payload.token);
+            localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
                 user: action.payload,
             };
         }
         case 'USER_LOGOUT': {
-            sessionStorage.removeItem('token');
+            localStorage.removeItem('token');
             return {
                 ...state,
                 user: null,

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { ApolloError, AuthenticationError } from 'apollo-server';
 
 dotenv.config();
 
@@ -21,4 +22,21 @@ export const authenticateToken = (token) => {
             }
         }
     );
+};
+
+export const isAuthenticated = (context) => {
+    if (context.req && context.req.headers.authorization) {
+        const token = context.req.headers.authorization.split('Bearer ')[1];
+
+        jwt.verify(
+            token,
+            process.env.REACT_APP_JWT_SECRET,
+            (error, decodedToken) => {
+                if (!error) {
+                    context.user = decodedToken;
+                }
+            }
+        );
+    }
+    return context;
 };

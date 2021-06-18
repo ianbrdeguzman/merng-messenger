@@ -7,7 +7,11 @@ const typeDefs = gql`
         token: String
         createdAt: String!
     }
-
+    type Message {
+        context: String!
+        from: String!
+        to: String!
+    }
     type Query {
         users: [User]
         login(username: String!, password: String!): User!
@@ -15,6 +19,7 @@ const typeDefs = gql`
 
     type Mutation {
         register(username: String!, email: String!, password: String!): User!
+        sendMessage(content: String!, to: String!): Message!
     }
 `;
 

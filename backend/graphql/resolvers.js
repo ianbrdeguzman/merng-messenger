@@ -5,25 +5,16 @@ import {
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
-import { generateToken, authenticateToken } from '../utils.js';
+import { generateToken } from '../utils.js';
 
 const resolvers = {
     Query: {
-        users: async (_, __, context) => {
+        users: async (_, __, { user }) => {
             try {
-                if (context.req && context.req.headers.authorization) {
-                    const token =
-                        context.req.headers.authorization.split('Bearer ')[1];
+                if (!user) throw new AuthenticationError('Invalid Token.');
 
-                    const { _id } = authenticateToken(token);
-
-                    if (_id) {
-                        const users = await User.find({ _id: { $ne: _id } });
-                        return users;
-                    }
-                } else {
-                    throw new AuthenticationError('No token Found.');
-                }
+                const users = await User.find({ _id: { $ne: user._id } });
+                return users;
             } catch (error) {
                 throw new ApolloError(error.message);
             }
@@ -73,6 +64,13 @@ const resolvers = {
 
                 return user.save();
             } catch (error) {
+                throw new ApolloError(error.message);
+            }
+        },
+        sendMessage: async (_, args) => {
+            try {
+            } catch (error) {
+                console.log(error);
                 throw new ApolloError(error.message);
             }
         },

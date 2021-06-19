@@ -5,10 +5,11 @@ import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../../apollo/mutation';
 import Loader from '../../components/loader/Loader';
 import { ImSpinner2 } from 'react-icons/im';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
-const Register = ({ history }) => {
+const Register = () => {
     const [error, setError] = useState(null);
+    const history = useHistory();
 
     const {
         register,
@@ -18,7 +19,7 @@ const Register = ({ history }) => {
     } = useForm();
 
     const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-        update: (_, __) => history.push('/login'),
+        update: (_, __) => history.push('/'),
         onError: (error) => setError(error.message),
     });
 

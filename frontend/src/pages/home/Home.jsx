@@ -3,23 +3,34 @@ import './home.scss';
 import { useQuery } from '@apollo/client';
 import { GET_USERS } from '../../apollo/query';
 import { UserContext } from '../../context/userContext';
+import { HiOutlineLogout } from 'react-icons/hi';
+import Users from '../../components/users/Users';
 
 const Home = () => {
-    const { dispatch } = useContext(UserContext);
+    const { user: loggedUser, dispatch } = useContext(UserContext);
 
-    const { loading, error, data } = useQuery(GET_USERS);
-
-    console.log(loading);
-    console.log(error);
-    console.log(data.users);
-
-    const handleLogoutOnClick = () => {
-        dispatch({ type: 'USER_LOGOUT' });
-    };
+    const { _, __, data } = useQuery(GET_USERS);
 
     return (
-        <div className='container'>
-            <button onClick={handleLogoutOnClick}>Logout</button>
+        <div className='home'>
+            <div className='home__content'>
+                <div className='home__content__left'>
+                    <header className='home__content__left__header'>
+                        <img
+                            src={loggedUser.imageUrl}
+                            alt={`${loggedUser.username}-avatar`}
+                        />
+                        <h1>Chats</h1>
+                        <button
+                            onClick={() => dispatch({ type: 'USER_LOGOUT' })}
+                        >
+                            <HiOutlineLogout />
+                        </button>
+                    </header>
+                    <Users users={data} />
+                </div>
+                <div className='home__content__right'>Messages</div>
+            </div>
         </div>
     );
 };

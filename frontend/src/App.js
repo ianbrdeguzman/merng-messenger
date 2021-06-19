@@ -6,17 +6,19 @@ import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 
 const App = () => {
-    const { user } = useContext(UserContext);
+    const { user: isLoggedIn } = useContext(UserContext);
 
     return (
         <BrowserRouter>
             <Switch>
                 <Route path='/register'>
-                    {user ? <Redirect to='/t' /> : <Register />}
+                    {isLoggedIn ? <Redirect to='/t' /> : <Register />}
                 </Route>
-                <Route path='/t'>{user ? <Home /> : <Redirect to='/' />}</Route>
+                <Route path='/t'>
+                    {isLoggedIn ? <Home /> : <Redirect to='/' />}
+                </Route>
                 <Route path='/*'>
-                    {user ? <Redirect to='/t' /> : <Login />}
+                    {isLoggedIn ? <Redirect to='/t' /> : <Login />}
                 </Route>
             </Switch>
         </BrowserRouter>

@@ -1,3 +1,99 @@
-.container {
-    border: 1px solid red;
+.home {
+    color: #050505;
+    height: 100vh;
+    &__content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__left {
+            width: 100px;
+            height: 100vh;
+            padding: 20px 1rem 1rem 1rem;
+            border-right: 1px solid rgba(128, 128, 128, 0.3);
+            overflow: hidden;
+            @media (min-width: 900px) {
+                width: 360px;
+            }
+            &__header {
+                padding-bottom: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+                img {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                }
+                h1 {
+                    flex: 1;
+                    margin: 0 1rem;
+                    font-size: 24px;
+                }
+                button {
+                    width: 32px;
+                    height: 32px;
+                    font-size: 24px;
+                    outline: none;
+                    border: none;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+            &__users {
+                margin: 1rem 0;
+                padding: 1rem 0;
+                height: calc(100vh - 88px);
+                overflow-y: scroll;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+                li {
+                    padding: 0.5rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 0.5rem;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: #f5f5f5;
+                    }
+                    img {
+                        width: 56px;
+                        height: 56px;
+                        border-radius: 50%;
+                    }
+                    div {
+                        flex: 1;
+                        margin: 0 0.5rem;
+                        font-size: 13px;
+                        font-weight: 500;
+                        p:first-child {
+                            font-size: 15px;
+                        }
+                        p:last-child {
+                            display: -webkit-box;
+                            -webkit-line-clamp: 1;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                        }
+                    }
+                    p {
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+        &__right {
+            flex: 1;
+            height: 100vh;
+        }
+    }
 }

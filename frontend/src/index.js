@@ -4,17 +4,20 @@ import './index.scss';
 import App from './App';
 import { ApolloProvider } from '@apollo/client';
 import client from './apollo/client';
-import { UserContextProvider } from './context/userContext';
+import { AuthContextProvider } from './context/authContext';
 import { MessageContextProvider } from './context/messageContext';
+import { UserContextProvider } from './context/userContext';
 
 ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
-            <UserContextProvider>
+            <AuthContextProvider>
                 <MessageContextProvider>
-                    <App />
+                    <UserContextProvider>
+                        <App />
+                    </UserContextProvider>
                 </MessageContextProvider>
-            </UserContextProvider>
+            </AuthContextProvider>
         </ApolloProvider>
     </React.StrictMode>,
     document.getElementById('root')

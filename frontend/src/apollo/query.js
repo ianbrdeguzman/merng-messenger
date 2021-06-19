@@ -31,6 +31,7 @@ export const GET_USERS = gql`
 export const GET_MESSAGES = gql`
     query ($from: String!) {
         getMessages(from: $from) {
+            _id
             from
             to
             content

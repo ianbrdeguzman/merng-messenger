@@ -1,35 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './home.scss';
-import { useQuery } from '@apollo/client';
-import { GET_USERS } from '../../apollo/query';
-import { UserContext } from '../../context/userContext';
-import { HiOutlineLogout } from 'react-icons/hi';
-import Users from '../../components/users/Users';
+import Messages from '../../components/messages/Messages';
+import { useLazyQuery } from '@apollo/client';
+import { GET_MESSAGES } from '../../apollo/query';
+import { MessageContext } from '../../context/messageContext';
+import Conversations from '../../components/conversations/Conversations';
 
 const Home = () => {
-    const { user: loggedUser, dispatch } = useContext(UserContext);
+    const [error, setError] = useState(null);
 
-    const { _, __, data } = useQuery(GET_USERS);
+    const { conversations, dispatch: messageDispatch } =
+        useContext(MessageContext);
+
+    const [getMessages, { loading }] = useLazyQuery(GET_MESSAGES, {
+        onCompleted: (data) => {
+            messageDispatch({
+                type: 'GET_MESSAGES',
+                payload: data.getMessages,
+            });
+        },
+        onError: (error) => setError(error.message),
+    });
 
     return (
         <div className='home'>
             <div className='home__content'>
-                <div className='home__content__left'>
-                    <header className='home__content__left__header'>
-                        <img
-                            src={loggedUser.imageUrl}
-                            alt={`${loggedUser.username}-avatar`}
-                        />
-                        <h1>Chats</h1>
-                        <button
-                            onClick={() => dispatch({ type: 'USER_LOGOUT' })}
-                        >
-                            <HiOutlineLogout />
-                        </button>
-                    </header>
-                    <Users users={data} />
-                </div>
-                <div className='home__content__right'>Messages</div>
+                <Messages getMessages={getMessages} />
+                <Conversations loading={loading} />
             </div>
         </div>
     );

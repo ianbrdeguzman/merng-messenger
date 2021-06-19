@@ -6,11 +6,11 @@ import Loader from '../../components/loader/Loader';
 import { ImSpinner2 } from 'react-icons/im';
 import { LOGIN_USER } from '../../apollo/query';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
+import { AuthContext } from '../../context/authContext';
 
 const Login = () => {
     const [error, setError] = useState(null);
-    const { dispatch } = useContext(UserContext);
+    const { dispatch } = useContext(AuthContext);
 
     const {
         register,

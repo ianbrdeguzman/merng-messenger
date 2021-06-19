@@ -13,13 +13,26 @@ const messageResolvers = {
                 if (!user) throw new AuthenticationError('Invalid Token.');
 
                 const sender = await User.findOne({ username: from });
+                console.log(sender);
 
                 if (!sender) throw new UserInputError('User not found.');
 
                 const messages = await Message.find({
-                    from: sender.username,
-                    to: user.username,
-                }).sort({ createdAt: 'desc' });
+                    $or: [
+                        {
+                            $and: [
+                                { from: sender.username },
+                                { to: user.username },
+                            ],
+                        },
+                        {
+                            $and: [
+                                { from: user.username },
+                                { to: sender.username },
+                            ],
+                        },
+                    ],
+                }).sort({ createdAt: 'asc' });
 
                 return messages;
             } catch (error) {

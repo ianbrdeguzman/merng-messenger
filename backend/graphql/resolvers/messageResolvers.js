@@ -13,7 +13,6 @@ const messageResolvers = {
                 if (!user) throw new AuthenticationError('Invalid Token.');
 
                 const sender = await User.findOne({ username: from });
-                console.log(sender);
 
                 if (!sender) throw new UserInputError('User not found.');
 

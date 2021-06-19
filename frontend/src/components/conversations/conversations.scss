@@ -16,15 +16,22 @@
             width: 100%;
             align-self: flex-end;
             &__item {
-                justify-self: flex-end;
                 margin: 0.5rem 0;
                 font-size: 15px;
+                display: flex;
+                align-items: flex-end;
                 &.right {
-                    text-align: right;
+                    justify-content: flex-end;
                     span {
                         background-color: #0099ff;
                         color: #ffffff;
                     }
+                }
+                img {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    margin-right: 0.5rem;
                 }
                 span {
                     max-width: 300px;

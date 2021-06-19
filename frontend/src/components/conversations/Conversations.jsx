@@ -5,12 +5,16 @@ import ConversationHeader from '../header/ConversationHeader';
 import { MessageContext } from '../../context/messageContext';
 import { AuthContext } from '../../context/authContext';
 import { MdSend } from 'react-icons/md';
+import { UserContext } from '../../context/userContext';
 
 const Conversations = ({ loading }) => {
     const { conversations } = useContext(MessageContext);
+
     const {
         user: { username: loggedUser },
     } = useContext(AuthContext);
+
+    const { selectedUser } = useContext(UserContext);
 
     return (
         <div className='conversation'>
@@ -33,6 +37,12 @@ const Conversations = ({ loading }) => {
                                                 : 'left'
                                         }`}
                                     >
+                                        {from !== loggedUser && (
+                                            <img
+                                                src={selectedUser.imageUrl}
+                                                alt={selectedUser.username}
+                                            />
+                                        )}
                                         <span>{content}</span>
                                     </div>
                                 );

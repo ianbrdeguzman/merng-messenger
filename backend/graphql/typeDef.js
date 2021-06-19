@@ -10,6 +10,7 @@ const typeDefs = gql`
         latestMessage: Message
     }
     type Message {
+        _id: ID!
         content: String!
         from: String!
         to: String!

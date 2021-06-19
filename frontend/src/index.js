@@ -9,16 +9,14 @@ import { MessageContextProvider } from './context/messageContext';
 import { UserContextProvider } from './context/userContext';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ApolloProvider client={client}>
-            <AuthContextProvider>
-                <MessageContextProvider>
-                    <UserContextProvider>
-                        <App />
-                    </UserContextProvider>
-                </MessageContextProvider>
-            </AuthContextProvider>
-        </ApolloProvider>
-    </React.StrictMode>,
+    <ApolloProvider client={client}>
+        <AuthContextProvider>
+            <MessageContextProvider>
+                <UserContextProvider>
+                    <App />
+                </UserContextProvider>
+            </MessageContextProvider>
+        </AuthContextProvider>
+    </ApolloProvider>,
     document.getElementById('root')
 );

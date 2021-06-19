@@ -29,8 +29,36 @@
         }
     }
     &__main {
-        border: 1px solid red;
         flex: 1;
+        padding: 1rem;
+        overflow-y: scroll;
+        display: flex;
+        justify-content: center;
+        &__loader {
+            align-self: center;
+        }
+        &__content {
+            width: 100%;
+            align-self: flex-end;
+            &__item {
+                justify-self: flex-end;
+                margin: 0.5rem 0;
+                font-size: 15px;
+                &.right {
+                    text-align: right;
+                    span {
+                        background-color: #0099ff;
+                        color: #ffffff;
+                    }
+                }
+                span {
+                    display: inline-block;
+                    padding: 0.5rem 1rem;
+                    border-radius: 3rem;
+                    background-color: #e4e6eb;
+                }
+            }
+        }
     }
     &__footer {
         width: 100%;

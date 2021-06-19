@@ -13,6 +13,8 @@ const userReducer = (state, action) => {
             return { ...state, users: action.payload };
         case 'SELECT_USER':
             return { ...state, selectedUser: action.payload };
+        case 'RESET_USER':
+            return { ...state, users: [], selectedUser: null };
         default:
             return { ...state };
     }

@@ -10,6 +10,8 @@ const messageReducer = (state, action) => {
     switch (action.type) {
         case 'GET_MESSAGES':
             return { ...state, conversations: action.payload };
+        case 'RESET_MESSAGES':
+            return { ...state, conversations: [] };
         default:
             return { ...state };
     }

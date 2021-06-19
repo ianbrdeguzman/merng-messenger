@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../../apollo/mutation';
 import Loader from '../../components/loader/Loader';
-import { ImSpinner2 } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 
 const Register = () => {
@@ -131,13 +130,7 @@ const Register = () => {
                         </div>
                         <div>
                             <button type='submit'>
-                                {loading ? (
-                                    <Loader>
-                                        <ImSpinner2 />
-                                    </Loader>
-                                ) : (
-                                    'Register'
-                                )}
+                                {loading ? <Loader /> : 'Register'}
                             </button>
                             <Link to='/'>Already have an account?</Link>
                         </div>

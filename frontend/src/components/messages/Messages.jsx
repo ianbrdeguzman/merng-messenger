@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './messages.scss';
 import { useQuery } from '@apollo/client';
 import { AuthContext } from '../../context/authContext';
@@ -6,20 +6,25 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import moment from 'moment';
 import { GET_USERS } from '../../apollo/query';
 import { UserContext } from '../../context/userContext';
+import { MessageContext } from '../../context/messageContext';
 
 const Messages = ({ getMessages }) => {
-    const [error, setError] = useState(null);
-
     const { user: loggedUser, dispatch: authDispatch } =
         useContext(AuthContext);
 
-    const { selectedUser, dispatch: userDispatch } = useContext(UserContext);
+    const { dispatch: messageDispatch } = useContext(MessageContext);
 
-    const { data: users } = useQuery(GET_USERS, {
+    const {
+        users,
+        selectedUser,
+        dispatch: userDispatch,
+    } = useContext(UserContext);
+
+    const { data } = useQuery(GET_USERS, {
         onCompleted: () => {
-            userDispatch({ type: 'GET_USERS', payload: users.users });
+            userDispatch({ type: 'GET_USERS', payload: data.users });
         },
-        onError: (error) => setError(error.message),
+        fetchPolicy: 'no-cache',
     });
 
     const handleSelectedUserOnClick = (username) => {
@@ -31,6 +36,12 @@ const Messages = ({ getMessages }) => {
         });
     };
 
+    const handleUserLogoutOnClick = () => {
+        authDispatch({ type: 'USER_LOGOUT' });
+        userDispatch({ type: 'RESET_USER' });
+        messageDispatch({ type: 'RESET_MESSAGES' });
+    };
+
     return (
         <div className='messages'>
             <header className='messages__header'>
@@ -39,29 +50,39 @@ const Messages = ({ getMessages }) => {
                     alt={`${loggedUser.username}-avatar`}
                 />
                 <h1>Chats</h1>
-                <button onClick={() => authDispatch({ type: 'USER_LOGOUT' })}>
+                <button onClick={handleUserLogoutOnClick}>
                     <HiOutlineLogout />
                 </button>
             </header>
             <ul className='messages__items'>
-                {users?.users.map(({ username, imageUrl, latestMessage }) => {
-                    return (
-                        <li
-                            className={
-                                selectedUser === username ? 'selected' : null
-                            }
-                            key={username}
-                            onClick={() => handleSelectedUserOnClick(username)}
-                        >
-                            <img src={imageUrl} alt={`${username}-avatar`} />
-                            <div>
-                                <p>{username}</p>
-                                <p>{latestMessage.content}</p>
-                            </div>
-                            <p>{moment(+latestMessage.createdAt).fromNow()}</p>
-                        </li>
-                    );
-                })}
+                {users.length !== 0 &&
+                    users.map(({ username, imageUrl, latestMessage }) => {
+                        return (
+                            <li
+                                className={
+                                    selectedUser === username
+                                        ? 'selected'
+                                        : null
+                                }
+                                key={username}
+                                onClick={() =>
+                                    handleSelectedUserOnClick(username)
+                                }
+                            >
+                                <img
+                                    src={imageUrl}
+                                    alt={`${username}-avatar`}
+                                />
+                                <div>
+                                    <p>{username}</p>
+                                    <p>{latestMessage.content}</p>
+                                </div>
+                                <p>
+                                    {moment(+latestMessage.createdAt).fromNow()}
+                                </p>
+                            </li>
+                        );
+                    })}
             </ul>
         </div>
     );

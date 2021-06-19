@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './home.scss';
 import Messages from '../../components/messages/Messages';
 import { useLazyQuery } from '@apollo/client';
@@ -7,10 +7,7 @@ import { MessageContext } from '../../context/messageContext';
 import Conversations from '../../components/conversations/Conversations';
 
 const Home = () => {
-    const [error, setError] = useState(null);
-
-    const { conversations, dispatch: messageDispatch } =
-        useContext(MessageContext);
+    const { dispatch: messageDispatch } = useContext(MessageContext);
 
     const [getMessages, { loading }] = useLazyQuery(GET_MESSAGES, {
         onCompleted: (data) => {
@@ -19,7 +16,6 @@ const Home = () => {
                 payload: data.getMessages,
             });
         },
-        onError: (error) => setError(error.message),
     });
 
     return (

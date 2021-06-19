@@ -1,21 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
+import './conversations.scss';
 import { MessageContext } from '../../context/messageContext';
 import { UserContext } from '../../context/userContext';
-import './conversations.scss';
 import { MdSend } from 'react-icons/md';
+import Loader from '../loader/Loader';
+import { AuthContext } from '../../context/authContext';
 
 const Conversations = ({ loading }) => {
     const [selectedUserDetails, setSelectedUserDetails] = useState({});
-    const { conversations } = useContext(MessageContext);
 
+    const { conversations } = useContext(MessageContext);
     const { users, selectedUser } = useContext(UserContext);
+    const {
+        user: { username: loggedUser },
+    } = useContext(AuthContext);
 
     useEffect(() => {
         const userDetails = users.find(
             (user) => selectedUser === user.username
         );
         setSelectedUserDetails(userDetails);
-    }, [selectedUser, setSelectedUserDetails]);
+    }, [selectedUser, setSelectedUserDetails, users]);
 
     return (
         <div className='conversation'>
@@ -34,9 +39,30 @@ const Conversations = ({ loading }) => {
                 )}
             </header>
             <main className='conversation__main'>
-                {conversations.map((message) => {
-                    console.log(message);
-                })}
+                {loading ? (
+                    <div className='conversation__main__loader'>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className='conversation__main__content'>
+                        {conversations.map(
+                            ({ from, to, _id, content, createdAt }) => {
+                                return (
+                                    <div
+                                        key={_id}
+                                        className={`conversation__main__content__item ${
+                                            from === loggedUser
+                                                ? 'right'
+                                                : 'left'
+                                        }`}
+                                    >
+                                        <span>{content}</span>
+                                    </div>
+                                );
+                            }
+                        )}
+                    </div>
+                )}
             </main>
             <footer className='conversation__footer'>
                 <form>

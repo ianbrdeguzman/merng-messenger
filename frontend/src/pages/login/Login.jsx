@@ -88,6 +88,7 @@ const Login = () => {
                                 })}
                                 id='password'
                                 placeholder='Password'
+                                autoComplete='on'
                             />
                             {errors.password && (
                                 <span>{errors.password.message}</span>

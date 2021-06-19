@@ -1,44 +1,12 @@
 .messages {
-    width: 100px;
+    min-width: 100px;
     height: 100vh;
-    padding: 20px 1rem 1rem 1rem;
+    padding: 20px 0.5rem 1rem 0.5rem;
     border-right: 1px solid rgba(128, 128, 128, 0.3);
     overflow: hidden;
     @media (min-width: 900px) {
-        width: 360px;
-    }
-    &__header {
-        padding-bottom: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-        img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-        }
-        h1 {
-            flex: 1;
-            margin: 0 1rem;
-            font-size: 24px;
-        }
-        button {
-            width: 32px;
-            height: 32px;
-            font-size: 24px;
-            outline: none;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s ease;
-            &:hover {
-                background-color: #e8e8e8;
-            }
-        }
+        min-width: 360px;
+        padding: 20px 1rem 1rem 1rem;
     }
     &__items {
         margin: 1rem 0;
@@ -51,13 +19,16 @@
             display: none;
         }
         li {
-            padding: 0.5rem;
+            padding: 0.5rem 0;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 0.5rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            @media (min-width: 900px) {
+                padding: 0.5rem;
+            }
             &:hover {
                 background-color: #e8e8e8;
             }
@@ -76,15 +47,17 @@
                 flex: 1;
                 margin: 0 0.5rem;
                 font-size: 13px;
-                font-weight: 500;
+
                 p:first-child {
                     font-size: 15px;
+                    font-weight: 500;
                 }
                 p:last-child {
                     display: -webkit-box;
                     -webkit-line-clamp: 1;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
+                    color: #65676b;
                 }
             }
             p {

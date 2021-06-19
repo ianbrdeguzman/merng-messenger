@@ -1,18 +1,14 @@
 import React, { useContext } from 'react';
 import './messages.scss';
+import Header from '../header/Header';
 import { useQuery } from '@apollo/client';
-import { AuthContext } from '../../context/authContext';
-import { HiOutlineLogout } from 'react-icons/hi';
-import moment from 'moment';
 import { GET_USERS } from '../../apollo/query';
 import { UserContext } from '../../context/userContext';
-import { MessageContext } from '../../context/messageContext';
+import moment from 'moment';
+import useShow from '../../hooks/useShow';
 
 const Messages = ({ getMessages }) => {
-    const { user: loggedUser, dispatch: authDispatch } =
-        useContext(AuthContext);
-
-    const { dispatch: messageDispatch } = useContext(MessageContext);
+    const { show } = useShow();
 
     const {
         users,
@@ -27,59 +23,49 @@ const Messages = ({ getMessages }) => {
         fetchPolicy: 'no-cache',
     });
 
-    const handleSelectedUserOnClick = (username) => {
-        userDispatch({ type: 'SELECT_USER', payload: username });
+    const handleSelectedUserOnClick = (user) => {
+        userDispatch({ type: 'SELECT_USER', payload: user });
         getMessages({
             variables: {
-                from: username,
+                from: user.username,
             },
         });
     };
 
-    const handleUserLogoutOnClick = () => {
-        authDispatch({ type: 'USER_LOGOUT' });
-        userDispatch({ type: 'RESET_USER' });
-        messageDispatch({ type: 'RESET_MESSAGES' });
-    };
-
     return (
         <div className='messages'>
-            <header className='messages__header'>
-                <img
-                    src={loggedUser.imageUrl}
-                    alt={`${loggedUser.username}-avatar`}
-                />
-                <h1>Chats</h1>
-                <button onClick={handleUserLogoutOnClick}>
-                    <HiOutlineLogout />
-                </button>
-            </header>
+            <Header />
             <ul className='messages__items'>
-                {users.length !== 0 &&
-                    users.map(({ username, imageUrl, latestMessage }) => {
+                {users.length > 0 &&
+                    users.map((user) => {
+                        const { username, imageUrl, latestMessage } = user;
                         return (
                             <li
                                 className={
-                                    selectedUser === username
+                                    selectedUser?.username === username
                                         ? 'selected'
                                         : null
                                 }
                                 key={username}
-                                onClick={() =>
-                                    handleSelectedUserOnClick(username)
-                                }
+                                onClick={() => handleSelectedUserOnClick(user)}
                             >
                                 <img
                                     src={imageUrl}
                                     alt={`${username}-avatar`}
                                 />
-                                <div>
-                                    <p>{username}</p>
-                                    <p>{latestMessage.content}</p>
-                                </div>
-                                <p>
-                                    {moment(+latestMessage.createdAt).fromNow()}
-                                </p>
+                                {show && (
+                                    <>
+                                        <div>
+                                            <p>{username}</p>
+                                            <p>{latestMessage.content}</p>
+                                        </div>
+                                        <p>
+                                            {moment(
+                                                +latestMessage.createdAt
+                                            ).fromNow()}
+                                        </p>
+                                    </>
+                                )}
                             </li>
                         );
                     })}

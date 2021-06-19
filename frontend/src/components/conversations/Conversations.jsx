@@ -1,43 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import './conversations.scss';
-import { MessageContext } from '../../context/messageContext';
-import { UserContext } from '../../context/userContext';
-import { MdSend } from 'react-icons/md';
 import Loader from '../loader/Loader';
+import ConversationHeader from '../header/ConversationHeader';
+import { MessageContext } from '../../context/messageContext';
 import { AuthContext } from '../../context/authContext';
+import { MdSend } from 'react-icons/md';
 
 const Conversations = ({ loading }) => {
-    const [selectedUserDetails, setSelectedUserDetails] = useState({});
-
     const { conversations } = useContext(MessageContext);
-    const { users, selectedUser } = useContext(UserContext);
     const {
         user: { username: loggedUser },
     } = useContext(AuthContext);
 
-    useEffect(() => {
-        const userDetails = users.find(
-            (user) => selectedUser === user.username
-        );
-        setSelectedUserDetails(userDetails);
-    }, [selectedUser, setSelectedUserDetails, users]);
-
     return (
         <div className='conversation'>
-            <header className='conversation__header'>
-                {selectedUser && (
-                    <>
-                        <img
-                            src={selectedUserDetails?.imageUrl}
-                            alt={selectedUserDetails?.username}
-                        />
-                        <div>
-                            <p>{selectedUserDetails?.username}</p>
-                            <p>Active 5mins ago</p>
-                        </div>
-                    </>
-                )}
-            </header>
+            <ConversationHeader />
             <main className='conversation__main'>
                 {loading ? (
                     <div className='conversation__main__loader'>

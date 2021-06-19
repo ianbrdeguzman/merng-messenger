@@ -1,33 +1,8 @@
 .conversation {
-    flex: 1;
+    width: calc(100vw - 100px);
     height: 100vh;
     display: flex;
     flex-direction: column;
-    &__header {
-        min-height: 65px;
-        padding: 12px 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-        z-index: 1;
-        img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-        div {
-            flex: 1;
-            margin: 0 0.5rem;
-            p:first-child {
-                font-size: 17px;
-                font-weight: 500;
-            }
-            p:last-child {
-                font-size: 13px;
-            }
-        }
-    }
     &__main {
         flex: 1;
         padding: 1rem;
@@ -52,10 +27,12 @@
                     }
                 }
                 span {
+                    max-width: 300px;
                     display: inline-block;
                     padding: 0.5rem 1rem;
-                    border-radius: 3rem;
+                    border-radius: 1rem;
                     background-color: #e4e6eb;
+                    text-align: left;
                 }
             }
         }
@@ -70,7 +47,7 @@
             justify-content: center;
             align-items: center;
             input {
-                flex: 1;
+                width: 100%;
                 margin: 0 1rem;
                 padding: 0.6rem 1rem;
                 font-size: 15px;

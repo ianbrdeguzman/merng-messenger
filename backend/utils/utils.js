@@ -9,20 +9,6 @@ export const generateToken = (user) => {
     });
 };
 
-export const authenticateToken = (token) => {
-    return jwt.verify(
-        token,
-        process.env.REACT_APP_JWT_SECRET,
-        (error, decodedToken) => {
-            if (error) {
-                throw new Error('Invalid Token.');
-            } else {
-                return decodedToken;
-            }
-        }
-    );
-};
-
 export const isAuthenticated = (context) => {
     if (context.req && context.req.headers.authorization) {
         const token = context.req.headers.authorization.split('Bearer ')[1];

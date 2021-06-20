@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import './conversationHeader.scss';
+import './messagesHeader.scss';
 import { UserContext } from '../../context/userContext';
 import moment from 'moment';
 
-const ConversationHeader = () => {
+const MessagesHeader = () => {
     const { selectedUser } = useContext(UserContext);
 
     return (
-        <header className='conversation__header'>
+        <header className='messages__header'>
             {selectedUser && (
                 <>
                     <img
@@ -29,4 +29,4 @@ const ConversationHeader = () => {
     );
 };
 
-export default ConversationHeader;
+export default MessagesHeader;

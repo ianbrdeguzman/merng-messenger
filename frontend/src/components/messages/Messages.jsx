@@ -1,75 +1,80 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './messages.scss';
-import Header from '../header/Header';
-import { useQuery } from '@apollo/client';
-import { GET_USERS } from '../../apollo/query';
+import Loader from '../loader/Loader';
+import Form from '../form/Form';
+import MessagesHeader from '../header/MessagesHeader';
+import { MessageContext } from '../../context/messageContext';
+import { AuthContext } from '../../context/authContext';
 import { UserContext } from '../../context/userContext';
-import moment from 'moment';
-import useShow from '../../hooks/useShow';
+import { useLazyQuery, useSubscription } from '@apollo/client';
+import { NEW_MESSAGE } from '../../apollo/subscription';
+import { GET_MESSAGES } from '../../apollo/query';
 
-const Messages = ({ getMessages }) => {
-    const { show } = useShow();
+const Messages = () => {
+    const { messages, dispatch: messageDispatch } = useContext(MessageContext);
 
     const {
-        users,
-        selectedUser,
-        dispatch: userDispatch,
-    } = useContext(UserContext);
+        user: { username: loggedUser },
+    } = useContext(AuthContext);
 
-    const { data } = useQuery(GET_USERS, {
-        onCompleted: () => {
-            userDispatch({ type: 'GET_USERS', payload: data.users });
+    const { selectedUser } = useContext(UserContext);
+
+    const [getMessages, { loading }] = useLazyQuery(GET_MESSAGES, {
+        onCompleted: (data) => {
+            messageDispatch({
+                type: 'GET_MESSAGES',
+                payload: data.getMessages,
+            });
         },
-        fetchPolicy: 'no-cache',
     });
 
-    const handleSelectedUserOnClick = (user) => {
-        userDispatch({ type: 'SELECT_USER', payload: user });
-        getMessages({
-            variables: {
-                from: user.username,
-            },
-        });
-    };
+    useEffect(() => {
+        if (selectedUser) {
+            getMessages({
+                variables: {
+                    from: selectedUser.username,
+                },
+            });
+        }
+    }, [selectedUser, getMessages]);
 
     return (
         <div className='messages'>
-            <Header />
-            <ul className='messages__items'>
-                {users.length > 0 &&
-                    users.map((user) => {
-                        const { username, imageUrl, latestMessage } = user;
-                        return (
-                            <li
-                                className={
-                                    selectedUser?.username === username
-                                        ? 'selected'
-                                        : null
-                                }
-                                key={username}
-                                onClick={() => handleSelectedUserOnClick(user)}
-                            >
-                                <img
-                                    src={imageUrl}
-                                    alt={`${username}-avatar`}
-                                />
-                                {show && (
-                                    <>
-                                        <div>
-                                            <p>{username}</p>
-                                            <p>{latestMessage.content}</p>
+            <MessagesHeader />
+            <main className='messages__main'>
+                {loading ? (
+                    <div className='messages__main__loader'>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className='messages__main__content'>
+                        {selectedUser &&
+                            messages?.map(
+                                ({ from, to, _id, content, createdAt }) => {
+                                    return (
+                                        <div
+                                            key={_id}
+                                            className={`messages__main__content__item ${
+                                                from === loggedUser
+                                                    ? 'right'
+                                                    : 'left'
+                                            }`}
+                                        >
+                                            {from !== loggedUser && (
+                                                <img
+                                                    src={selectedUser?.imageUrl}
+                                                    alt={selectedUser?.username}
+                                                />
+                                            )}
+                                            <span>{content}</span>
                                         </div>
-                                        <p>
-                                            {moment(
-                                                +latestMessage.createdAt
-                                            ).fromNow()}
-                                        </p>
-                                    </>
-                                )}
-                            </li>
-                        );
-                    })}
-            </ul>
+                                    );
+                                }
+                            )}
+                    </div>
+                )}
+            </main>
+            <Form />
         </div>
     );
 };

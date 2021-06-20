@@ -3,19 +3,19 @@ import React, { createContext, useReducer } from 'react';
 const MessageContext = createContext();
 
 const initialState = {
-    conversations: [],
+    messages: [],
 };
 
 const messageReducer = (state, action) => {
     switch (action.type) {
         case 'GET_MESSAGES':
-            return { ...state, conversations: action.payload };
+            return { ...state, messages: action.payload };
         case 'RESET_MESSAGES':
-            return { ...state, conversations: [] };
+            return { ...state, messages: [] };
         case 'ADD_MESSAGE':
             return {
                 ...state,
-                conversations: [...state.conversations, action.payload],
+                messages: [...state.messages, action.payload],
             };
         default:
             return { ...state };

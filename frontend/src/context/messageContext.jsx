@@ -12,6 +12,11 @@ const messageReducer = (state, action) => {
             return { ...state, conversations: action.payload };
         case 'RESET_MESSAGES':
             return { ...state, conversations: [] };
+        case 'ADD_MESSAGE':
+            return {
+                ...state,
+                conversations: [...state.conversations, action.payload],
+            };
         default:
             return { ...state };
     }

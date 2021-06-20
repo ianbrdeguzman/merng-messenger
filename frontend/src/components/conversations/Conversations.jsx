@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import './conversations.scss';
 import Loader from '../loader/Loader';
 import ConversationHeader from '../header/ConversationHeader';
+import Form from '../form/Form';
 import { MessageContext } from '../../context/messageContext';
 import { AuthContext } from '../../context/authContext';
-import { MdSend } from 'react-icons/md';
 import { UserContext } from '../../context/userContext';
 
 const Conversations = ({ loading }) => {
@@ -26,7 +26,7 @@ const Conversations = ({ loading }) => {
                     </div>
                 ) : (
                     <div className='conversation__main__content'>
-                        {conversations.map(
+                        {conversations?.map(
                             ({ from, to, _id, content, createdAt }) => {
                                 return (
                                     <div
@@ -51,14 +51,7 @@ const Conversations = ({ loading }) => {
                     </div>
                 )}
             </main>
-            <footer className='conversation__footer'>
-                <form>
-                    <input type='text' name='text' id='text' />
-                    <button type='submit'>
-                        <MdSend size={20} color='#0099ff' />
-                    </button>
-                </form>
-            </footer>
+            <Form />
         </div>
     );
 };

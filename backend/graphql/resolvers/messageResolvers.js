@@ -5,6 +5,7 @@ import {
     UserInputError,
     AuthenticationError,
 } from 'apollo-server-errors';
+import { withFilter } from 'apollo-server';
 
 const messageResolvers = {
     Query: {
@@ -40,7 +41,7 @@ const messageResolvers = {
         },
     },
     Mutation: {
-        sendMessage: async (_, { content, to }, { user }) => {
+        sendMessage: async (_, { content, to }, { user, pubsub }) => {
             try {
                 if (!user) throw new AuthenticationError('Invalid Token.');
 
@@ -50,17 +51,46 @@ const messageResolvers = {
                 if (recipient.username === user.username)
                     throw new UserInputError("You can't message yourself.");
 
-                const message = new Message({
+                const message = await new Message({
                     from: user.username,
                     to,
                     content,
                 });
 
-                return message.save();
+                const createdMessage = await message.save();
+
+                pubsub.publish('NEW_MESSAGE', { newMessage: createdMessage });
+
+                return createdMessage;
             } catch (error) {
                 console.log(error);
                 throw new ApolloError(error.message);
             }
+        },
+    },
+    Subscription: {
+        newMessage: {
+            subscribe: withFilter(
+                (_, __, { pubsub, user }) => {
+                    try {
+                        if (!user)
+                            throw new AuthenticationError('Invalid Token.');
+                        return pubsub.asyncIterator(['NEW_MESSAGE']);
+                    } catch (error) {
+                        console.log(error);
+                        throw new ApolloError(error.message);
+                    }
+                },
+                ({ newMessage }, _, { user }) => {
+                    if (
+                        newMessage.from === user.username ||
+                        newMessage.to === user.username
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            ),
         },
     },
 };

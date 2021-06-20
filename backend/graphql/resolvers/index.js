@@ -10,6 +10,9 @@ const resolvers = {
         ...userResolvers.Mutation,
         ...messageResolvers.Mutation,
     },
+    Subscription: {
+        ...messageResolvers.Subscription,
+    },
 };
 
 export default resolvers;

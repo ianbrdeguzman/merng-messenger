@@ -26,6 +26,10 @@ const typeDefs = gql`
         register(username: String!, email: String!, password: String!): User!
         sendMessage(content: String!, to: String!): Message!
     }
+
+    type Subscription {
+        newMessage: Message!
+    }
 `;
 
 export default typeDefs;

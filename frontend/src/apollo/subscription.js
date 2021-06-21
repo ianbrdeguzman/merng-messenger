@@ -7,6 +7,7 @@ export const NEW_MESSAGE = gql`
             to
             from
             content
+            _id
         }
     }
 `;

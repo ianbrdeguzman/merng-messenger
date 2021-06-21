@@ -1,21 +1,16 @@
 import React, { useContext, useEffect } from 'react';
 import './messages.scss';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
 import Form from '../form/Form';
 import MessagesHeader from '../header/MessagesHeader';
 import { MessageContext } from '../../context/messageContext';
-import { AuthContext } from '../../context/authContext';
 import { UserContext } from '../../context/userContext';
-import { useLazyQuery, useSubscription } from '@apollo/client';
-import { NEW_MESSAGE } from '../../apollo/subscription';
+import { useLazyQuery } from '@apollo/client';
 import { GET_MESSAGES } from '../../apollo/query';
 
 const Messages = () => {
     const { messages, dispatch: messageDispatch } = useContext(MessageContext);
-
-    const {
-        user: { username: loggedUser },
-    } = useContext(AuthContext);
 
     const { selectedUser } = useContext(UserContext);
 
@@ -26,6 +21,7 @@ const Messages = () => {
                 payload: data.getMessages,
             });
         },
+        fetchPolicy: 'no-cache',
     });
 
     useEffect(() => {
@@ -49,28 +45,11 @@ const Messages = () => {
                 ) : (
                     <div className='messages__main__content'>
                         {selectedUser &&
-                            messages?.map(
-                                ({ from, to, _id, content, createdAt }) => {
-                                    return (
-                                        <div
-                                            key={_id}
-                                            className={`messages__main__content__item ${
-                                                from === loggedUser
-                                                    ? 'right'
-                                                    : 'left'
-                                            }`}
-                                        >
-                                            {from !== loggedUser && (
-                                                <img
-                                                    src={selectedUser?.imageUrl}
-                                                    alt={selectedUser?.username}
-                                                />
-                                            )}
-                                            <span>{content}</span>
-                                        </div>
-                                    );
-                                }
-                            )}
+                            messages?.map((message) => {
+                                return (
+                                    <Message key={message._id} {...message} />
+                                );
+                            })}
                     </div>
                 )}
             </main>

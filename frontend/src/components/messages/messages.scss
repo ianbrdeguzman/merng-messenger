@@ -7,41 +7,12 @@
         flex: 1;
         padding: 1rem;
         overflow-y: scroll;
-        display: flex;
-        justify-content: center;
         &__loader {
-            align-self: center;
+            transform: translateY(50%);
         }
         &__content {
             width: 100%;
             align-self: flex-end;
-            &__item {
-                margin: 0.5rem 0;
-                font-size: 15px;
-                display: flex;
-                align-items: flex-end;
-                &.right {
-                    justify-content: flex-end;
-                    span {
-                        background-color: #0099ff;
-                        color: #ffffff;
-                    }
-                }
-                img {
-                    width: 28px;
-                    height: 28px;
-                    border-radius: 50%;
-                    margin-right: 0.5rem;
-                }
-                span {
-                    max-width: 300px;
-                    display: inline-block;
-                    padding: 0.5rem 1rem;
-                    border-radius: 1rem;
-                    background-color: #e4e6eb;
-                    text-align: left;
-                }
-            }
         }
     }
 }

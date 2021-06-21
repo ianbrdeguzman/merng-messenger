@@ -17,6 +17,11 @@ const messageReducer = (state, action) => {
                 ...state,
                 messages: [...state.messages, action.payload],
             };
+        case 'ADD_INCOMMING_MESSAGE':
+            return {
+                ...state,
+                messages: [...state.messages, action.payload],
+            };
         default:
             return { ...state };
     }

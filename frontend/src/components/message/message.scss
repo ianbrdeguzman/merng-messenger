@@ -1,0 +1,44 @@
+.message {
+    margin: 0.5rem 0;
+    font-size: 15px;
+    display: flex;
+    align-items: flex-end;
+    &.right {
+        justify-content: flex-end;
+        p {
+            background-color: #0099ff;
+            color: #ffffff;
+            span {
+                left: -135px;
+                right: unset;
+            }
+        }
+    }
+    img {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+    }
+    p {
+        max-width: 300px;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        background-color: #e4e6eb;
+        text-align: left;
+        position: relative;
+        span {
+            font-size: 10px;
+            color: #ffffff;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+            background-color: #3c3c3c;
+            position: absolute;
+            top: 50%;
+            right: -135px;
+            transform: translateY(-50%);
+        }
+    }
+}

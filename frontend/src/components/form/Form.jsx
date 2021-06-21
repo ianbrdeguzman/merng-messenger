@@ -5,13 +5,19 @@ import { MdSend } from 'react-icons/md';
 import { UserContext } from '../../context/userContext';
 import { useMutation } from '@apollo/client';
 import { SEND_MESSAGE } from '../../apollo/mutation';
+import { MessageContext } from '../../context/messageContext';
 
 const Form = () => {
     const { register, handleSubmit, reset } = useForm();
 
     const { selectedUser } = useContext(UserContext);
 
+    const { dispatch: messageDispatch } = useContext(MessageContext);
+
     const [sendMessage] = useMutation(SEND_MESSAGE, {
+        onCompleted: (data) => {
+            messageDispatch({ type: 'ADD_MESSAGE', payload: data.sendMessage });
+        },
         onError: (error) => console.log(error),
     });
 

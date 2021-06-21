@@ -7,12 +7,24 @@
         flex: 1;
         padding: 1rem;
         overflow-y: scroll;
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         &__loader {
-            transform: translateY(50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         &__content {
             width: 100%;
             align-self: flex-end;
+            margin: auto;
         }
     }
 }

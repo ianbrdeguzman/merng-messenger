@@ -7,7 +7,7 @@ const pubsub = new PubSub();
 dotenv.config();
 
 export const generateToken = (user) => {
-    return jwt.sign(user, process.env.REACT_APP_JWT_SECRET, {
+    return jwt.sign(user, process.env.JWT_SECRET, {
         expiresIn: '1h',
     });
 };
@@ -20,15 +20,13 @@ export const isAuthenticated = (context) => {
         token = context.connection.context.Authorization.split('Bearer ')[1];
     }
 
-    jwt.verify(
-        token,
-        process.env.REACT_APP_JWT_SECRET,
-        (error, decodedToken) => {
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, (error, decodedToken) => {
             if (!error) {
                 context.user = decodedToken;
             }
-        }
-    );
+        });
+    }
 
     context.pubsub = pubsub;
 

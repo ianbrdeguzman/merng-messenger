@@ -4,11 +4,13 @@
     display: flex;
     flex-direction: column;
     &__main {
+        height: calc(100vh - 117.19px);
         flex: 1;
         padding: 1rem;
         overflow-y: scroll;
         display: flex;
         flex-direction: column-reverse;
+        justify-content: flex-start;
         position: relative;
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -24,7 +26,13 @@
         &__content {
             width: 100%;
             align-self: flex-end;
-            margin: auto;
+            &__intro {
+                font-size: 13px;
+                color: #65676B;
+                display: flex;
+                justify-content: center;
+                text-align: center;
+            }
         }
     }
 }

@@ -16,12 +16,12 @@ const MessagesHeader = () => {
                     />
                     <div>
                         <p>{selectedUser?.username}</p>
-                        <p>
+                        {selectedUser?.latestMessage ? <p>
                             Active{' '}
                             {moment(
                                 +selectedUser?.latestMessage.createdAt
                             ).fromNow()}
-                        </p>
+                        </p> : <p>Active {moment(+selectedUser.createdAt).fromNow()}</p>}
                     </div>
                 </>
             )}

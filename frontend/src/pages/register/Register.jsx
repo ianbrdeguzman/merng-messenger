@@ -107,6 +107,7 @@ const Register = () => {
                                 })}
                                 id='password'
                                 placeholder='Password'
+                                autoComplete='on'
                             />
                             {errors.password && (
                                 <span>{errors.password.message}</span>
@@ -123,6 +124,7 @@ const Register = () => {
                                 })}
                                 id='confirmPassword'
                                 placeholder='Confirm Password'
+                                autoComplete='on'
                             />
                             {errors.confirmPassword && (
                                 <span>{errors.confirmPassword.message}</span>

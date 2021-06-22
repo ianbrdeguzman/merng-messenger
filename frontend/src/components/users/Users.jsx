@@ -29,7 +29,7 @@ const Users = () => {
             <ul className='users__items'>
                 {users.length > 0 &&
                     users.map((user) => {
-                        const { username, imageUrl, latestMessage } = user;
+                        const { username, imageUrl, createdAt } = user;
                         return (
                             <li
                                 className={
@@ -53,13 +53,13 @@ const Users = () => {
                                     <>
                                         <div>
                                             <p>{username}</p>
-                                            <p>{latestMessage.content}</p>
+                                            {user.latestMessage ? <p>{user.latestMessage?.content}</p> : <p>No messages</p>}
                                         </div>
-                                        <p>
+                                        {user.latestMessage ? <p>
                                             {moment(
-                                                +latestMessage.createdAt
+                                                +user.latestMessage?.createdAt
                                             ).fromNow()}
-                                        </p>
+                                        </p> : <p>{moment(+createdAt).fromNow()}</p>}
                                     </>
                                 )}
                             </li>

@@ -44,8 +44,9 @@ const Messages = () => {
                     </div>
                 ) : (
                     <div className='messages__main__content'>
-                        {selectedUser &&
-                            messages?.map((message) => {
+                        {selectedUser && messages.length === 0 ? 
+                        <div className='messages__main__content__intro'>✨ Start your conversation with {selectedUser.username}. ✨</div> :
+                            messages.map((message) => {
                                 return (
                                     <Message key={message._id} {...message} />
                                 );

@@ -7,6 +7,7 @@ import { ImSpinner2 } from 'react-icons/im';
 import { LOGIN_USER } from '../../apollo/query';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
+import { wsLink } from '../../apollo/client';
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -21,6 +22,7 @@ const Login = () => {
     const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
         onCompleted: (data) => {
             dispatch({ type: 'USER_LOGIN', payload: data.login });
+            wsLink.subscriptionClient.tryReconnect();
         },
         onError: (error) => setError(error.message),
     });

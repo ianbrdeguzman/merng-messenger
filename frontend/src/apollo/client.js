@@ -24,13 +24,14 @@ const authLink = setContext((_, { headers }) => {
 
 httpLink = authLink.concat(httpLink);
 
-const wsLink = new WebSocketLink({
+export const wsLink = new WebSocketLink({
     uri: 'ws://localhost:4000/graphql',
     options: {
         reconnect: true,
-        connectionParams: {
+        lazy: true,
+        connectionParams: () => ({
             Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        }),
     },
 });
 

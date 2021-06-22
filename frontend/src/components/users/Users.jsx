@@ -10,7 +10,7 @@ import useSort from '../../hooks/useSort'
 
 const Users = () => {
     const { show } = useShow();
-    const [sortedUsers, sortUser] = useSort();
+    const [sortedUsers, sortUsers] = useSort();
 
     const {
         users,
@@ -27,7 +27,7 @@ const Users = () => {
 
     useEffect(()=>{
         if(users) {
-            sortUser(users);
+            sortUsers(users);
         }
     },[users])
 

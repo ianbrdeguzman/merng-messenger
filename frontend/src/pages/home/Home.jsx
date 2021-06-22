@@ -36,7 +36,7 @@ const Home = () => {
             }
         }
         getUsers();
-    }, [newMessage, getUsers, loggedUser, selectedUser, messageDispatch]);
+    }, [newMessage, getUsers, loggedUser, selectedUser, messageDispatch, userDispatch]);
 
     return (
         <div className='home'>

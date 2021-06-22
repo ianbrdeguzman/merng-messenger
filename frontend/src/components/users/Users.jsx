@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './users.scss';
 import Header from '../header/Header';
 import { useQuery } from '@apollo/client';
@@ -6,9 +6,11 @@ import { GET_USERS } from '../../apollo/query';
 import { UserContext } from '../../context/userContext';
 import moment from 'moment';
 import useShow from '../../hooks/useShow';
+import useSort from '../../hooks/useSort'
 
 const Users = () => {
     const { show } = useShow();
+    const [sortedUsers, sortUser] = useSort();
 
     const {
         users,
@@ -16,19 +18,25 @@ const Users = () => {
         dispatch: userDispatch,
     } = useContext(UserContext);
 
-    const { data } = useQuery(GET_USERS, {
+    const { loading, data } = useQuery(GET_USERS, {
         onCompleted: () => {
             userDispatch({ type: 'GET_USERS', payload: data.users });
         },
         fetchPolicy: 'no-cache',
     });
 
+    useEffect(()=>{
+        if(users) {
+            sortUser(users);
+        }
+    },[users])
+
     return (
         <div className='users'>
             <Header />
             <ul className='users__items'>
-                {users.length > 0 &&
-                    users.map((user) => {
+                {loading ? <h1>Loading...</h1> : sortedUsers.length > 0 &&
+                    sortedUsers.map((user) => {
                         const { username, imageUrl, createdAt } = user;
                         return (
                             <li

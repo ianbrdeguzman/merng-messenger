@@ -24,7 +24,6 @@ const Home = () => {
     });
 
     useEffect(() => {
-        console.log(newMessage);
         if (newMessage && selectedUser) {
             if (
                 newMessage.newMessage.from === selectedUser.username &&

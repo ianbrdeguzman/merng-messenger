@@ -16,11 +16,14 @@ const typeDefs = gql`
         from: String!
         to: String!
         createdAt: String!
+        reactions: [Reaction]
     }
     type Reaction {
         _id: ID!
         content: String!
         createdAt: String!
+        messageId: String!
+        userId: String!
         message: Message!
         user: User!
     }

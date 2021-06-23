@@ -36,7 +36,15 @@ const messageResolvers = {
                     ],
                 }).sort({ createdAt: 'asc' });
 
-                return messages;
+                const messagesWithReactions = messages.map(async (message) => {
+                    const reactions = await Reaction.find({
+                        messageId: message._id,
+                    });
+                    message.reactions = reactions;
+                    return message;
+                });
+
+                return messagesWithReactions;
             } catch (error) {
                 throw new ApolloError(error.message);
             }
@@ -69,27 +77,29 @@ const messageResolvers = {
                 throw new ApolloError(error.message);
             }
         },
-        reactToMessage: async (_, {_id, content}, {user, pubsub}) => {
-            const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎']
+        reactToMessage: async (_, { _id, content }, { user, pubsub }) => {
+            const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
             try {
-                if(!reactions.includes(content)) throw new UserInputError('Invalid reaction.')
+                if (!reactions.includes(content))
+                    throw new UserInputError('Invalid reaction.');
 
                 const username = user ? user.username : '';
-                user = await User.findOne({username : username})
+                user = await User.findOne({ username: username });
                 if (!user) throw new AuthenticationError('Invalid token.');
 
-                const message = await Message.findOne({_id: _id})
-                
+                const message = await Message.findOne({ _id: _id });
+
                 if (!message) throw new UserInputError('Invalid message.');
 
-                if (message.from !== user.username && message.to !== user.username) throw new ForbiddenError('Unauthorized message.')
+                if (
+                    message.from !== user.username &&
+                    message.to !== user.username
+                )
+                    throw new ForbiddenError('Unauthorized message.');
 
                 let reaction = await Reaction.findOne({
-                    $and: [
-                        {messageId: _id}, 
-                        {userId: user._id}
-                    ]
-                })
+                    $and: [{ messageId: _id }, { userId: user._id }],
+                });
 
                 if (reaction) {
                     reaction.content = content;
@@ -99,7 +109,7 @@ const messageResolvers = {
                         content: content,
                         userId: user._id,
                         messageId: message._id,
-                    })
+                    });
                 }
 
                 reaction.message = message;
@@ -111,7 +121,6 @@ const messageResolvers = {
             } catch (error) {
                 throw new ApolloError(error.message);
             }
-
         },
     },
     Subscription: {
@@ -151,7 +160,9 @@ const messageResolvers = {
                     }
                 },
                 async ({ newReaction }, _, { user }) => {
-                    const message = await Message.findOne({_id: newReaction.messageId})
+                    const message = await Message.findOne({
+                        _id: newReaction.messageId,
+                    });
                     if (
                         message.from === user.username ||
                         message.to === user.username

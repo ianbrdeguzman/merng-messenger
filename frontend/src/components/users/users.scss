@@ -6,6 +6,7 @@
     overflow: hidden;
     @media (min-width: 900px) {
         min-width: 360px;
+        max-width: 360px;
         padding: 20px 1rem 1rem 1rem;
     }
     &__items {

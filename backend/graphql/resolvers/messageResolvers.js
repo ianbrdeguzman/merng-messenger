@@ -1,9 +1,11 @@
 import User from '../../mongoose/models/userModel.js';
 import Message from '../../mongoose/models/messageModel.js';
+import Reaction from '../../mongoose/models/reactionModel.js';
 import {
     ApolloError,
     UserInputError,
     AuthenticationError,
+    ForbiddenError,
 } from 'apollo-server-errors';
 import { withFilter } from 'apollo-server';
 
@@ -67,6 +69,50 @@ const messageResolvers = {
                 throw new ApolloError(error.message);
             }
         },
+        reactToMessage: async (_, {_id, content}, {user, pubsub}) => {
+            const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎']
+            try {
+                if(!reactions.includes(content)) throw new UserInputError('Invalid reaction.')
+
+                const username = user ? user.username : '';
+                user = await User.findOne({username : username})
+                if (!user) throw new AuthenticationError('Invalid token.');
+
+                const message = await Message.findOne({_id: _id})
+                
+                if (!message) throw new UserInputError('Invalid message.');
+
+                if (message.from !== user.username && message.to !== user.username) throw new ForbiddenError('Unauthorized message.')
+
+                let reaction = await Reaction.findOne({
+                    $and: [
+                        {messageId: _id}, 
+                        {userId: user._id}
+                    ]
+                })
+
+                if (reaction) {
+                    reaction.content = content;
+                    await reaction.save();
+                } else {
+                    reaction = await Reaction.create({
+                        content: content,
+                        userId: user._id,
+                        messageId: message._id,
+                    })
+                }
+
+                reaction.message = message;
+                reaction.user = user;
+
+                pubsub.publish('NEW_REACTION', { newReaction: reaction });
+
+                return reaction;
+            } catch (error) {
+                throw new ApolloError(error.message);
+            }
+
+        },
     },
     Subscription: {
         newMessage: {
@@ -75,7 +121,7 @@ const messageResolvers = {
                     try {
                         if (!user)
                             throw new AuthenticationError('Invalid Token.');
-                        return pubsub.asyncIterator(['NEW_MESSAGE']);
+                        return pubsub.asyncIterator('NEW_MESSAGE');
                     } catch (error) {
                         console.log(error);
                         throw new ApolloError(error.message);
@@ -85,6 +131,30 @@ const messageResolvers = {
                     if (
                         newMessage.from === user.username ||
                         newMessage.to === user.username
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            ),
+        },
+        newReaction: {
+            subscribe: withFilter(
+                (_, __, { pubsub, user }) => {
+                    try {
+                        if (!user)
+                            throw new AuthenticationError('Invalid Token.');
+                        return pubsub.asyncIterator('NEW_REACTION');
+                    } catch (error) {
+                        console.log(error);
+                        throw new ApolloError(error.message);
+                    }
+                },
+                async ({ newReaction }, _, { user }) => {
+                    const message = await Message.findOne({_id: newReaction.messageId})
+                    if (
+                        message.from === user.username ||
+                        message.to === user.username
                     ) {
                         return true;
                     }

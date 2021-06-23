@@ -21,3 +21,15 @@ export const SEND_MESSAGE = gql`
         }
     }
 `;
+
+export const REACT_TO_MESSAGE = gql`
+    mutation ($_id: String!, $content: String!) {
+        reactToMessage(_id: $_id, content: $content) {
+            _id
+            content
+            createdAt
+            messageId
+            userId
+        }
+    }
+`;

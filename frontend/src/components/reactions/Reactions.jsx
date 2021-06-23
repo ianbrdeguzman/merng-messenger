@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
 import './reactions.scss';
-import { FiSmile } from 'react-icons/fi';
 import { AuthContext } from '../../context/authContext';
 import useShow from '../../hooks/useShow';
-
+import { FiSmile } from 'react-icons/fi';
 const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
 
 const Reactions = ({ user, id, position }) => {

@@ -42,7 +42,7 @@ const messageReducer = (state, action) => {
                 // else add new reaction to reacted message
                 if (reactedMessage) {
                     reactedMessage.reactions = [
-                        ...reactedMessage.reactions,
+                        ...reactedMessage?.reactions,
                         {
                             content: action.payload.content,
                             _id: action.payload._id,

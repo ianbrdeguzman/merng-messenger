@@ -6,9 +6,13 @@ import moment from 'moment';
 import Reactions from '../reactions/Reactions';
 import useShow from '../../hooks/useShow';
 
-const Message = ({ _id, content, createdAt, from, to }) => {
+const Message = ({ _id, content, createdAt, from, to, reactions }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showReaction, setShowReaction] = useState(false);
+
+    const reactionIcons = [
+        ...new Set(reactions?.map((react) => react.content)),
+    ];
 
     const { show } = useShow();
 
@@ -44,8 +48,16 @@ const Message = ({ _id, content, createdAt, from, to }) => {
             >
                 {content}
                 {showTooltip && show && (
-                    <span className='message__tooltip'>
+                    <a href='/#' className='message__tooltip'>
                         {moment(+createdAt).format('MMMM DD, YYYY @ h:mm a')}
+                    </a>
+                )}
+                {reactions?.length > 0 && (
+                    <span className='message__reactions'>
+                        {reactionIcons.map((reaction, i) => {
+                            return <i key={i}>{reaction}</i>;
+                        })}{' '}
+                        {reactions.length}
                     </span>
                 )}
             </p>

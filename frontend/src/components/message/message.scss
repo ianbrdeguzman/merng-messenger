@@ -9,9 +9,25 @@
         p {
             background-color: #0099ff;
             color: #ffffff;
-            span {
-                left: -135px;
+            a {
+                left: -140px;
                 right: unset;
+                text-decoration: none;
+                cursor: default;
+                pointer-events: none;
+            }
+            span {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.2rem;
+                border-radius: 3rem;
+                background-color: #ffffff;
+                box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.1),
+                    0 2px 4px 0 rgba(0, 0, 0, 0.1),
+                    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+                position: absolute;
+                bottom: -25%;
+                right: 0;
+                left: unset;
             }
         }
     }
@@ -33,18 +49,6 @@
             max-width: 300px;
         }
     }
-    &__tooltip {
-        font-size: 10px;
-        color: #ffffff;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        white-space: nowrap;
-        background-color: #3c3c3c;
-        position: absolute;
-        top: 50%;
-        right: -135px;
-        transform: translateY(-50%);
-    }
     .small.right {
         position: absolute;
         bottom: 2rem;
@@ -56,5 +60,33 @@
         bottom: 2rem;
         right: 30px;
         z-index: 1;
+    }
+    &__tooltip {
+        font-size: 10px;
+        color: #ffffff;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        white-space: nowrap;
+        background-color: #3c3c3c;
+        position: absolute;
+        top: 50%;
+        right: -140px;
+        transform: translateY(-50%);
+        text-decoration: none;
+    }
+    &__reactions {
+        color: #050505;
+        font-size: 0.7rem;
+        padding: 0.1rem 0.2rem;
+        border-radius: 3rem;
+        background-color: #ffffff;
+        box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.1),
+            0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        bottom: -25%;
+        right: 0;
+        i {
+            font-style: normal;
+        }
     }
 }

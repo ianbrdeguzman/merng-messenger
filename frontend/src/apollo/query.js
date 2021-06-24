@@ -37,6 +37,9 @@ export const GET_MESSAGES = gql`
             to
             content
             createdAt
+            reactions {
+                content
+            }
         }
     }
 `;

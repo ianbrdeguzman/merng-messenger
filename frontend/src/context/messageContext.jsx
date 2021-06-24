@@ -28,7 +28,7 @@ const messageReducer = (state, action) => {
 
             // find the reaction in reacted message
             let reactionOnMessage;
-            if (reactedMessage.reactions) {
+            if (reactedMessage?.reactions) {
                 reactionOnMessage = reactedMessage.reactions.find(
                     (reaction) => reaction._id === action.payload._id
                 );
@@ -40,13 +40,15 @@ const messageReducer = (state, action) => {
                 reactionOnMessage.content = action.payload.content;
             } else {
                 // else add new reaction to reacted message
-                reactedMessage.reactions = [
-                    ...reactedMessage.reactions,
-                    {
-                        content: action.payload.content,
-                        _id: action.payload._id,
-                    },
-                ];
+                if (reactedMessage) {
+                    reactedMessage.reactions = [
+                        ...reactedMessage.reactions,
+                        {
+                            content: action.payload.content,
+                            _id: action.payload._id,
+                        },
+                    ];
+                }
             }
             // return state with reacted message
             return {

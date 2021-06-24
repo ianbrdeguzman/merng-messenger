@@ -37,7 +37,7 @@ const Home = () => {
                 });
             }
         }
-        if (newReaction) {
+        if (newReaction && selectedUser) {
             messageDispatch({
                 type: 'ADD_REACTION',
                 payload: newReaction.newReaction,

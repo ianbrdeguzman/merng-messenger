@@ -20,6 +20,7 @@ const Reactions = ({ user, id, position }) => {
 
     const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
         onCompleted: (data) => {
+            console.log(data.reactToMessage);
             messasgeDispatch({
                 type: 'ADD_REACTION',
                 payload: data.reactToMessage,

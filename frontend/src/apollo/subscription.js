@@ -11,3 +11,15 @@ export const NEW_MESSAGE = gql`
         }
     }
 `;
+
+export const NEW_REACTION = gql`
+    subscription {
+        newReaction {
+            _id
+            content
+            message {
+                _id
+            }
+        }
+    }
+`;

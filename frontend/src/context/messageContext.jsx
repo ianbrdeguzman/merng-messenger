@@ -27,9 +27,12 @@ const messageReducer = (state, action) => {
             );
 
             // find the reaction in reacted message
-            const reactionOnMessage = reactedMessage.reactions.find(
-                (reaction) => reaction._id === action.payload._id
-            );
+            let reactionOnMessage;
+            if (reactedMessage.reactions) {
+                reactionOnMessage = reactedMessage.reactions.find(
+                    (reaction) => reaction._id === action.payload._id
+                );
+            }
 
             // if reaction is found in reacted message
             if (reactionOnMessage) {

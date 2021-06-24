@@ -27,9 +27,9 @@ export const REACT_TO_MESSAGE = gql`
         reactToMessage(_id: $_id, content: $content) {
             _id
             content
-            createdAt
-            messageId
-            userId
+            message {
+                _id
+            }
         }
     }
 `;

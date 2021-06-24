@@ -48,7 +48,7 @@ const messageReducer = (state, action) => {
             // return state with reacted message
             return {
                 ...state,
-                reactedMessage,
+                messages: copyOfMessages,
             };
         default:
             return { ...state };

@@ -8,6 +8,8 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: isAuthenticated,
+    introspection: true,
+    playground: true,
 });
 
 await connectMongoose();

@@ -8,6 +8,10 @@ export const NEW_MESSAGE = gql`
             from
             content
             _id
+            reactions {
+                _id
+                content
+            }
         }
     }
 `;

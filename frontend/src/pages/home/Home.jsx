@@ -37,22 +37,24 @@ const Home = () => {
                 });
             }
         }
-        if (newReaction && selectedUser) {
-            messageDispatch({
-                type: 'ADD_REACTION',
-                payload: newReaction.newReaction,
-            });
-        }
         getUsers();
     }, [
         newMessage,
-        newReaction,
         getUsers,
         loggedUser,
         selectedUser,
         messageDispatch,
         userDispatch,
     ]);
+
+    useEffect(() => {
+        if (newReaction && selectedUser) {
+            messageDispatch({
+                type: 'ADD_REACTION',
+                payload: newReaction.newReaction,
+            });
+        }
+    }, [newReaction, messageDispatch, selectedUser]);
 
     return (
         <div className='home'>

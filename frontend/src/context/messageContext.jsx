@@ -13,9 +13,13 @@ const messageReducer = (state, action) => {
         case 'RESET_MESSAGES':
             return { ...state, messages: [] };
         case 'ADD_MESSAGE':
+            let newMessage = action.payload;
+            if (!action.payload.reactions) {
+                newMessage.reactions = [];
+            }
             return {
                 ...state,
-                messages: [...state.messages, action.payload],
+                messages: [...state.messages, newMessage],
             };
         case 'ADD_REACTION':
             // make a copy of messages

@@ -69,6 +69,8 @@ const messageResolvers = {
 
                 const createdMessage = await message.save();
 
+                createdMessage.reactions = [];
+
                 pubsub.publish('NEW_MESSAGE', { newMessage: createdMessage });
 
                 return createdMessage;

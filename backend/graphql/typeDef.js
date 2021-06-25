@@ -16,7 +16,7 @@ const typeDefs = gql`
         from: String!
         to: String!
         createdAt: String!
-        reactions: [Reaction]
+        reactions: [Reaction]!
     }
     type Reaction {
         _id: ID!

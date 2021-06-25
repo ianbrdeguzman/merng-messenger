@@ -10,7 +10,7 @@ const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
 
 const Reactions = ({ user, id, position }) => {
     const [showReactions, setShowReactions] = useState(false);
-    const { show } = useShow();
+    const { _, reactionShow } = useShow();
 
     const { dispatch: messasgeDispatch } = useContext(MessageContext);
 
@@ -45,7 +45,7 @@ const Reactions = ({ user, id, position }) => {
                 </button>
                 {showReactions && (
                     <ul
-                        className={`${!show ? 'small' : null} ${
+                        className={`${!reactionShow ? 'small' : null} ${
                             position === 'right' ? 'right' : 'left'
                         }`}
                     >
